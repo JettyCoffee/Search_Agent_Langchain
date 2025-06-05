@@ -1,0 +1,174 @@
+{
+  "status": "success",
+  "query": "大语言模型的最新研究进展",
+  "timestamp": "2025-06-06T00:11:39.664734",
+  "analysis": {
+    "query_type": "混合",
+    "recommended_sources": [
+      "arxiv",
+      "wikipedia"
+    ],
+    "search_keywords": [
+      "大语言模型的最新研究进展"
+    ],
+    "reasoning": "默认搜索策略"
+  },
+  "search_results": {
+    "wikipedia": {
+      "status": "success",
+      "results": [
+        {
+          "title": "深度求索",
+          "snippet": "深度求索（DeepSeek），全称杭州深度求索人工智能基础技术研究有限公司，是中华人民共和国的一家人工智能与大型语言模型公司。该公司的总部位于浙江省杭州市（注册地位于拱墅区），由中資对冲基金幻方量化创立，创始人和行政總裁为梁文锋。 早在2008年，梁文锋就开始带领团队使用机器学习等技术探索全自动量化交易。",
+          "size": 72987,
+          "wordcount": 6631,
+          "timestamp": "2025-06-04T10:12:41Z",
+          "link": "https://zh.wikipedia.org/wiki/%E6%B7%B1%E5%BA%A6%E6%B1%82%E7%B4%A2"
+        },
+        {
+          "title": "ChatGPT",
+          "snippet": "Transformer），是OpenAI开发的人工智能聊天机器人程序，于2022年12月推出。该程序使用基于GPT-3.5、GPT-4、GPT-4o、GPT-4.5架构的大型语言模型並以强化学习训练。ChatGPT目前仍以文字方式互動，而除了可以用人類自然對話方式來互動，還可以用于甚為複雜的語言",
+          "size": 91243,
+          "wordcount": 8423,
+          "timestamp": "2025-05-27T13:55:18Z",
+          "link": "https://zh.wikipedia.org/wiki/ChatGPT"
+        },
+        {
+          "title": "人工神经网络",
+          "snippet": "的研究以后，神经网络的研究停滞不前。他们发现了神经网络的两个关键问题。第一是基本感知机无法处理异或回路。第二个重要的问题是电脑没有足够的能力来处理大型神经网络所需要的很长的计算时间。直到计算机具有更强的计算能力之前，神经网络的研究进展缓慢。 后来出现的一个关键的进展是保罗·韦伯斯发明的反向传播算法（Werbos",
+          "size": 27918,
+          "wordcount": 3876,
+          "timestamp": "2025-03-05T16:10:16Z",
+          "link": "https://zh.wikipedia.org/wiki/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"
+        },
+        {
+          "title": "人工智能史",
+          "snippet": "的大型語言模型。2025年1月，深度求索推出著名的大型語言模型的開源模型，並使用新的算法減低訓練成本。 先進的人工智能（AI）系統能夠高精度理解和回應人類對話，已成熟到能夠與機器人無縫整合，改變了製造業、醫療保健、公共服務和材料研究等行業。 人工智能還通過高級數據分析和假設生成加速科學研究。",
+          "size": 98468,
+          "wordcount": 13407,
+          "timestamp": "2025-06-04T04:04:55Z",
+          "link": "https://zh.wikipedia.org/wiki/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%8F%B2"
+        },
+        {
+          "title": "认知科学",
+          "snippet": "Science），是一門研究訊息如何在大腦中形成以及轉錄過程的跨領域學科。它研究何謂认知，认知有何用途以及它如何工作，研究信息如何表现为感觉、语言、注意、推理和情感。其研究領域包括心理學、哲學、人工智能、神經科學、學習、語言學、人類學、社會學和教育學。它跨越相當多層次的分析，從低層次的學習和決策機制，到高層次的",
+          "size": 30722,
+          "wordcount": 4590,
+          "timestamp": "2025-01-14T06:26:59Z",
+          "link": "https://zh.wikipedia.org/wiki/%E8%AE%A4%E7%9F%A5%E7%A7%91%E5%AD%A6"
+        }
+      ]
+    },
+    "arxiv": {
+      "status": "success",
+      "results": []
+    }
+  },
+  "summary": "调用失败: 401 Client Error: Unauthorized for url: https://api.mjdjourney.cn/v1/chat/completions",
+  "debug_logs": [
+    {
+      "timestamp": "2025-06-06T00:11:37.430429",
+      "stage": "search_start",
+      "data": {
+        "query": "大语言模型的最新研究进展"
+      }
+    },
+    {
+      "timestamp": "2025-06-06T00:11:37.431879",
+      "stage": "query_analysis_start",
+      "data": {
+        "query": "大语言模型的最新研究进展"
+      }
+    },
+    {
+      "timestamp": "2025-06-06T00:11:37.914358",
+      "stage": "query_analysis_complete",
+      "data": {
+        "query_type": "混合",
+        "recommended_sources": [
+          "arxiv",
+          "wikipedia"
+        ],
+        "search_keywords": [
+          "大语言模型的最新研究进展"
+        ],
+        "reasoning": "默认搜索策略"
+      }
+    },
+    {
+      "timestamp": "2025-06-06T00:11:37.914865",
+      "stage": "parallel_search_start",
+      "data": {
+        "query": "大语言模型的最新研究进展",
+        "sources": [
+          "arxiv",
+          "wikipedia"
+        ]
+      }
+    },
+    {
+      "timestamp": "2025-06-06T00:11:37.915872",
+      "stage": "arxiv_search_start",
+      "data": {
+        "query": "大语言模型的最新研究进展"
+      }
+    },
+    {
+      "timestamp": "2025-06-06T00:11:37.916872",
+      "stage": "wikipedia_search_start",
+      "data": {
+        "query": "大语言模型的最新研究进展"
+      }
+    },
+    {
+      "timestamp": "2025-06-06T00:11:39.148748",
+      "stage": "wikipedia_search_complete",
+      "data": {
+        "query": "大语言模型的最新研究进展",
+        "results_count": 5
+      }
+    },
+    {
+      "timestamp": "2025-06-06T00:11:39.263851",
+      "stage": "arxiv_search_complete",
+      "data": {
+        "query": "大语言模型的最新研究进展",
+        "results_count": 0
+      }
+    },
+    {
+      "timestamp": "2025-06-06T00:11:39.264355",
+      "stage": "parallel_search_complete",
+      "data": {
+        "sources_searched": [
+          "wikipedia",
+          "arxiv"
+        ],
+        "success_count": 2
+      }
+    },
+    {
+      "timestamp": "2025-06-06T00:11:39.265361",
+      "stage": "summarization_start",
+      "data": {
+        "query": "大语言模型的最新研究进展",
+        "sources_count": 2
+      }
+    },
+    {
+      "timestamp": "2025-06-06T00:11:39.663878",
+      "stage": "summarization_complete",
+      "data": {
+        "summary_length": 91
+      }
+    },
+    {
+      "timestamp": "2025-06-06T00:11:39.664734",
+      "stage": "search_complete",
+      "data": {
+        "query": "大语言模型的最新研究进展",
+        "total_debug_logs": 11
+      }
+    }
+  ]
+}
