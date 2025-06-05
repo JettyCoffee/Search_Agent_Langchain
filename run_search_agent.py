@@ -1,160 +1,105 @@
 #!/usr/bin/env python3
 """
-智能搜索Agent交互式运行程序
+交互式运行智能搜索Agent
+允许用户输入查询并获取回答
 """
 
 import os
-import json
 import sys
-from datetime import datetime
-try:
-    from intelligent_search_agent import IntelligentSearchAgent
-except ImportError:
-    # 如果LangChain版本导入失败，使用简化版
-    from intelligent_search_agent_simple import IntelligentSearchAgent
+import json
+import argparse
+import logging
+from langchain_search_agent import LangChainSearchAgent
 
-def print_banner():
-    """打印欢迎横幅"""
-    banner = """
-    ╔══════════════════════════════════════════════════════════╗
-    ║            智能搜索Agent - Intelligent Search Agent      ║
-    ║                                                          ║
-    ║  整合 arXiv、Wikipedia、Google Scholar 的智能搜索系统    ║
-    ║  使用 Claude AI 进行智能分析和汇总                       ║
-    ╚══════════════════════════════════════════════════════════╝
-    """
-    print(banner)
-
-def print_search_progress(stage: str):
-    """打印搜索进度"""
-    stages = {
-        "analyzing": "🔍 正在分析查询意图...",
-        "searching": "🌐 正在并行搜索多个数据源...",
-        "summarizing": "📝 正在使用Claude AI汇总结果...",
-        "complete": "✅ 搜索完成！"
-    }
-    print(f"\n{stages.get(stage, stage)}")
-
-def save_results(query: str, results: dict):
-    """保存搜索结果到文件"""
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"search_results_{timestamp}.json"
-    
-    with open(filename, 'w', encoding='utf-8') as f:
-        json.dump({
-            "timestamp": datetime.now().isoformat(),
-            "query": query,
-            "results": results
-        }, f, ensure_ascii=False, indent=2)
-    
-    print(f"\n💾 结果已保存到: {filename}")
-    return filename
-
-def display_results(results: dict, show_debug: bool = False):
-    """显示搜索结果"""
-    print("\n" + "="*60)
-    print("搜索结果汇总")
-    print("="*60)
-    
-    # 显示查询分析
-    if "analysis" in results:
-        analysis = results["analysis"]
-        print(f"\n📊 查询分析:")
-        print(f"   类型: {analysis.get('query_type', 'N/A')}")
-        print(f"   推荐源: {', '.join(analysis.get('recommended_sources', []))}")
-        print(f"   关键词: {', '.join(analysis.get('search_keywords', []))}")
-        print(f"   理由: {analysis.get('reasoning', 'N/A')}")
-    
-    # 显示搜索结果统计
-    if "search_results" in results:
-        print(f"\n📈 搜索结果统计:")
-        for source, data in results["search_results"].items():
-            if isinstance(data, list):
-                print(f"   {source}: 找到 {len(data)} 条结果")
-            else:
-                print(f"   {source}: {data}")
-    
-    # 显示AI汇总
-    if "summary" in results:
-        print(f"\n🤖 Claude AI 汇总:")
-        print("-"*60)
-        print(results["summary"])
-        print("-"*60)
-    
-    # 显示调试信息（如果需要）
-    if show_debug and "debug_logs" in results:
-        print(f"\n🐛 调试信息 (共 {len(results['debug_logs'])} 条日志):")
-        for log in results["debug_logs"][-5:]:  # 只显示最后5条
-            print(f"   [{log['timestamp']}] {log['stage']}: {log['data']}")
+# 设置日志
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 def main():
     """主函数"""
-    print_banner()
+    # 解析命令行参数
+    parser = argparse.ArgumentParser(description='运行智能搜索Agent')
+    parser.add_argument('-d', '--debug', action='store_true', help='启用调试模式')
+    parser.add_argument('-q', '--query', type=str, help='要搜索的查询')
+    parser.add_argument('-o', '--output', type=str, help='将结果保存到指定的JSON文件')
+    args = parser.parse_args()
     
-    # 获取API密钥
-    claude_api_key = os.getenv("CLAUDE_API_KEY") or "sk-ALXXaygI4QIkj315355f4e2cA38c47A9B589D2D0F71b09D5"
-    
-    # 创建智能搜索Agent
-    print("⚙️  正在初始化智能搜索Agent...")
     try:
-        agent = IntelligentSearchAgent(claude_api_key)
-        print("✅ Agent初始化成功！")
-    except Exception as e:
-        print(f"❌ Agent初始化失败: {e}")
-        sys.exit(1)
+        # 创建Agent
+        agent = LangChainSearchAgent(debug=args.debug)
+        
+        if args.query:
+            # 单次查询模式
+            query = args.query
+            result = process_query(agent, query, debug=args.debug)
+            
+            # 保存结果（如果指定）
+            if args.output:
+                with open(args.output, 'w', encoding='utf-8') as f:
+                    json.dump(result, f, ensure_ascii=False, indent=2)
+                print(f"结果已保存到 {args.output}")
+        else:
+            # 交互式模式
+            run_interactive_mode(agent, args.debug)
     
-    # 主循环
+    except Exception as e:
+        logger.error(f"运行错误: {e}")
+        sys.exit(1)
+
+def process_query(agent, query, debug=False):
+    """处理单个查询"""
+    print(f"\n🔍 正在处理查询: {query}")
+    print("请稍等，这可能需要一些时间...\n")
+    
+    # 运行查询
+    result = agent.run(query)
+    
+    # 打印结果
+    print("\n" + "="*80)
+    print(f"📝 回答:")
+    print("-"*80)
+    print(result["answer"])
+    
+    # 打印调试信息
+    if debug and "debug_info" in result:
+        print("\n" + "="*80)
+        print("🛠️ 调试信息:")
+        print("-"*80)
+        print("工具使用步骤:")
+        for i, step in enumerate(result["debug_info"]["intermediate_steps"], 1):
+            print(f"\n步骤 {i}:")
+            print(f"使用工具: {step['tool']}")
+            print(f"工具输入: {step['tool_input']}")
+            print(f"工具输出: {step['tool_output'][:200]}..." if len(step['tool_output']) > 200 else step['tool_output'])
+    
+    return result
+
+def run_interactive_mode(agent, debug=False):
+    """运行交互式模式"""
+    print("\n🤖 智能搜索Agent交互模式")
+    print("=" * 80)
+    print("输入您的查询，或输入 'exit' 退出")
+    print("=" * 80)
+    
     while True:
-        print("\n" + "-"*60)
-        print("请输入您的查询（输入 'exit' 退出，'help' 查看帮助）:")
-        query = input("🔍 > ").strip()
-        
-        if query.lower() == 'exit':
-            print("\n👋 感谢使用智能搜索Agent，再见！")
-            break
-        
-        if query.lower() == 'help':
-            print("\n📚 使用帮助:")
-            print("   - 输入任何问题进行智能搜索")
-            print("   - 系统会自动分析问题类型并选择合适的搜索源")
-            print("   - 支持的搜索源: arXiv(学术论文)、Wikipedia(百科知识)、Google Scholar(学术文献)")
-            print("   - 输入 'debug' 开启调试模式")
-            print("   - 输入 'exit' 退出程序")
-            continue
-        
-        if query.lower() == 'debug':
-            show_debug = True
-            print("🐛 调试模式已开启")
-            continue
-        
-        if not query:
-            print("⚠️  请输入有效的查询内容")
-            continue
-        
-        # 执行搜索
         try:
-            print_search_progress("analyzing")
+            # 获取用户输入
+            query = input("\n🔍 请输入您的查询: ")
             
-            # 执行搜索（这里会自动显示进度）
-            results = agent.search(query)
-            
-            print_search_progress("complete")
-            
-            # 显示结果
-            display_results(results, show_debug=False)
-            
-            # 询问是否保存结果
-            save_choice = input("\n是否保存搜索结果？(y/n): ").strip().lower()
-            if save_choice == 'y':
-                save_results(query, results)
+            # 检查是否退出
+            if query.lower() in ('exit', 'quit', 'q', '退出'):
+                print("\n👋 感谢使用智能搜索Agent！")
+                break
+                
+            # 处理查询
+            if query.strip():
+                process_query(agent, query, debug=debug)
             
         except KeyboardInterrupt:
-            print("\n⚠️  搜索被用户中断")
-            continue
+            print("\n\n👋 已中断，感谢使用智能搜索Agent！")
+            break
         except Exception as e:
-            print(f"\n❌ 搜索过程中发生错误: {e}")
-            print("请检查网络连接和API配置")
-            continue
+            print(f"\n❌ 处理查询时发生错误: {e}")
 
 if __name__ == "__main__":
     main() 

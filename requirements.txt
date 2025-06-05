@@ -1,18 +1,28 @@
-# 核心依赖
-requests>=2.31.0
-pydantic>=2.0.0
-python-dotenv>=1.0.0
+# 核心框架依赖
+langchain>=0.1.0
+langchain-core>=0.1.0
+langchain-google-genai>=0.0.5
 
-# Google Gemini API 
-google-generativeai>=0.3.0  # Gemini API客户端
-Pillow>=10.0.0  # 用于Gemini图像处理
+# 工具依赖
+requests>=2.31.0
+python-dotenv>=1.0.0
+google-generativeai>=0.3.2
+Pillow>=10.0.0  # 用于图像处理
+
+# SERP API (Google Scholar搜索)
+serpapi>=0.1.2
+
+# 核心依赖
+pydantic>=2.5.2
 
 # API客户端（可选）
-openai>=1.0.0  # OpenAI/Claude兼容API客户端
-langchain>=0.1.0  # 如果需要使用LangChain版本
+openai # Latest is 1.30.0, but using >=1.0.0 is fine if you just need to ensure a minimum version
 
-# XML解析（用于arXiv）
-# (通常是Python标准库的一部分)
-
-# 日志和JSON处理
-# (这些通常是Python标准库的一部分) 
+# 新增依赖
+fastapi>=0.104.1
+uvicorn>=0.24.0
+langgraph>=0.0.20
+scholarly>=1.7.11
+arxiv>=2.0.0
+wikipedia>=1.4.0
+beautifulsoup4>=4.12.2

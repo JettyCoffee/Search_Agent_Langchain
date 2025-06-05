@@ -1,0 +1,14 @@
+# 后端依赖
+fastapi
+uvicorn[standard]
+python-dotenv
+langchain
+langchain-google-genai
+langchain-community
+langgraph
+google-generativeai
+arxiv
+wikipedia-api
+requests
+websockets
+pydantic
